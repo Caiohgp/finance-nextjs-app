@@ -1,0 +1,28 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "value": 100,
+      "type": "Expense",
+      "description": "Restaurant",
+      "expenseType": "Food",
+      "date": "2023-03-15T23:00:00"
+    },
+    {
+      "id": 2,
+      "value": 159,
+      "type": "Expense",
+      "description": "Gas",
+      "expenseType": "Car",
+      "date": "2023-03-15T23:00:00"
+    },
+    {
+      "id": 3,
+      "value": 500,
+      "type": "Income",
+      "description": "Salary",
+      "expenseType": "",
+      "date": "2023-03-15T23:00:00"
+    }
+  ]
+}

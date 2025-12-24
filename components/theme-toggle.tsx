@@ -6,8 +6,6 @@ export function ThemeToggle() {
 
   const { setTheme, resolvedTheme } = useTheme()
 
-  console.log('Resolved Theme:', resolvedTheme);
-
   return (
 
     <button
