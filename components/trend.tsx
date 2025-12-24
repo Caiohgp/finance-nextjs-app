@@ -1,36 +1,52 @@
+import { useMemo } from "react";
+import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import formatCurrency from "@/lib/format-currency";
+
 type FinancialTrendProps = {
-    expenses: number;
-    income: number;
-    investments: number;
-    savings: number;
+    type: string;
+    value: number;
+    previousValue: number;
+}
+
+const colorTypes: Record<string, string> = {
+    'Income': 'text-green-700 dark:text-green-300',
+    'Expense': 'text-red-700 dark:text-red-300',
+    'Investment': 'text-indigo-700 dark:text-indigo-300',
+    'Saving': 'text-yellow-700 dark:text-yellow-300'
 }
 
 export default function Trend(
-    {expenses, income, 
-    investments, savings }
+    {type, value, 
+    previousValue }
     : FinancialTrendProps) {
 
+
+    const calcPercentageChange = (value: number, previousValue: number) => {
+        if (!previousValue || !value) return 100
+        return ((value - previousValue) / previousValue) * 100
+    }
+
+    const percentageChange : string = useMemo(
+        () => calcPercentageChange(value, previousValue).toFixed(0),
+        [value, previousValue]
+    )
+
+    const formattedCurrentValue = formatCurrency(value)
+    
     return (
         <div>
-            <h2>This is your financial trend</h2>
-            <div className="flex flex-container gap-10">
+            <div>
                 <div className="flex flex-col">
-                    <div>Expenses</div>
-                    <div>${expenses}</div>
-                </div> 
-                <div className="flex flex-col">
-                    <div>Income</div>
-                    <div>${income}</div>
-                </div> 
-                <div className="flex flex-col">
-                    <div>Investments</div>
-                    <div>${investments}</div>
-                </div> 
-                <div className="flex flex-col">
-                    <div>Savings</div>
-                    <div>${savings}</div>
-                </div>  
-                
+                    <div className={`font-semibold ${colorTypes[type]}`}>{type}</div>                    
+                    <div className="text-2xl font-semibold text-black dark:text-white mb-2">
+                        {formattedCurrentValue}
+                    </div>
+                    <div className="flex space-x-1 items-center text-sm">
+                        {percentageChange < "0" && <ArrowDownLeft className="text-red-700 dark:text-red-300" />}
+                        {percentageChange >= "0" && <ArrowUpRight className="text-green-700 dark:text-green-300" />}
+                        <div>{percentageChange}% vs last period</div>
+                    </div>
+                </div>                
             </div>
         </div>
     )
