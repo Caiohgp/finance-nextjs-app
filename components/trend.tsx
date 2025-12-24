@@ -3,7 +3,7 @@ import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import formatCurrency from "@/lib/format-currency";
 
 type FinancialTrendProps = {
-    type: string;
+    type: 'Income' | 'Expense' | 'Investment' | 'Saving';
     value: number;
     previousValue: number;
 }

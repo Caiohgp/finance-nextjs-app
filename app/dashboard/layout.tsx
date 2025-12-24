@@ -7,7 +7,7 @@ export default function PageLayout({children}: {
     return(
         <div>
             {children}
-            <footer>Footer</footer>
+            <footer></footer>
         </div>
     )
 
