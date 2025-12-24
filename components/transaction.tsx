@@ -38,15 +38,15 @@ export default function Transaction({description,value,date,type,expenseType}:Tr
     const formattedValue = formatCurrency(value);
 
     return (
-    <div className="flex flex-container space-x-2 items-center justify-between border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-        <div className={`${colors} flex items-center mr-4 grow`}>
+    <div className="flex flex-container items-center border p-4 rounded-lg shadow-sm hover:shadow-md">
+        <div className={`${colors} flex items-center grow`}>
             <IconComponent className="mr-2 w-4 h-4 hidden sm:block" />
             <span>{description}</span>
         </div>
-        <div className="min-w-[150px] items-center hidden md:flex">
+        <div className="min-w-[150px] hidden md:flex">
             {date}
         </div>
-        <div className="min-w-[120px] items-center hidden md:flex">
+        <div className="min-w-[120px] hidden md:flex">
             {expenseType && <div className="rounded-md bg-gray-700 dark:bg-gray-200 text-xs text-gray-200 dark:text-gray-800 px-2 py-0.5">
                 {expenseType.toUpperCase()}
             </div>}

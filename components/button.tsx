@@ -1,5 +1,3 @@
-import React from "react";
-
 const variantStyles :  Record<string, string> = {
     default: 'bg-black text-white dark:bg-white dark:text-black rounded-md hover:bg-gray-700 dark:hover:bg-gray-200',
     outline: 'border border-gray-300 dark:border-gray-500 rounded-md hover:bg-gray-300 dark:hover:bg-gray-500',
