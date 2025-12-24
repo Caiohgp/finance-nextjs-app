@@ -41,6 +41,38 @@ export default function Dashboard() {
             
             </div>
 
+            <hr/>
+            <div className="space-y-4">
+                <h2>Forms</h2>
+                <div className="grid grid-cols-2 gap-4">  
+                    <label className="flex flex-col">
+                        Name
+                        <input type="text" placeholder="Name" className="border p-2 rounded-md bg-white dark:bg-gray-800 "/>
+                    </label>
+                    <label className="flex flex-col">
+                        Email
+                        <input type="email" placeholder="Email" className="border p-2 rounded-md bg-white dark:bg-gray-800"/>
+                    </label>
+                        <label className="flex flex-col">
+                            Combobox
+                            <select className="border p-2 rounded-md text-black bg-white dark:bg-gray-800 text-black dark:text-white">
+                                <option></option>
+                                <option>Option 1</option>
+                                <option>Option 2</option>
+                            </select>
+                        </label>
+                    
+                        <label className="flex flex-col">
+                            Free Text
+                            <textarea placeholder="Textarea" className="border p-2 rounded-md bg-white dark:bg-gray-800"></textarea>
+                        </label>
+
+                </div>
+
+                <Button props={{size: 'medium', text:'Submit'}}/>
+                
+            </div>
+
         </div>
     )
 }
