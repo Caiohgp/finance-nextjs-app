@@ -1,7 +1,5 @@
 import Transaction from "@/components/transaction"
-import transaction from "@/components/transaction"
-import Link from "next/link"
-import { Key } from "react"
+import TransactionSummary from "@/components/transactionSummary";
 
 type TransactionProps = {
     id : string,
@@ -12,24 +10,79 @@ type TransactionProps = {
     date: string
 }
 
+type GroupedTransaction = {
+  date: string
+  transactions: TransactionProps[]
+  total: number
+  income: number
+  expense: number
+}
+
+function groupTransactionsWithTotals(transactions: TransactionProps[]): GroupedTransaction[] {
+  const grouped: { [date: string]: TransactionProps[] } = {}
+
+  transactions.forEach(transaction => {
+    const date = transaction.date.split('T')[0]
+    
+    if (!grouped[date]) {
+      grouped[date] = []
+    }
+        grouped[date].push(transaction)
+    })
+
+    const result = Object.entries(grouped).map(([date, transactionsOfDay]) => {
+
+    const income = transactionsOfDay
+      .filter(t => t.type === 'Income')
+      .reduce((sum, t) => sum + t.value, 0)
+    
+    const expense = transactionsOfDay
+      .filter(t => t.type === 'Expense')
+      .reduce((sum, t) => sum + t.value, 0)
+    
+    const total = income - expense
+
+    return {
+      date,
+      transactions: transactionsOfDay,
+      total,
+      income,
+      expense
+    }
+  })
+
+  // Ordena por data (mais recente primeiro)
+  return result.sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+}
+
 export default async function TransactionList(){
     
-    const response = await fetch('http://localhost:3100/transactions')
+    const response = await fetch('http://localhost:3100/transactions', {cache: "no-store"})
 
     const transactions = await response.json()
 
-    console.log(transactions)
+    const groupedTransactions = groupTransactionsWithTotals(transactions)
 
     return (
-        <ul className="mt-8 flex flex-col space-y-4">
-            {transactions.map((transaction: TransactionProps)  => 
-                <li key={transaction.id}>
-                    <Transaction description={transaction.description} 
-                    value={transaction.value} date={transaction.date} 
-                    type={transaction.type} expenseType={transaction.expenseType}/>
-                </li>
-            )}
-        </ul>
+        <div>
+            {groupedTransactions.map(transaction  => 
+                <div className="my-8" key={transaction.date}>
+                    <TransactionSummary date={transaction.date} value={transaction.total}  />
+                    <hr/>
+                    <ul className="mt-8 flex flex-col space-y-4">
+                        {transaction.transactions.map((transaction: TransactionProps)  => 
+                            <li key={transaction.id}>
+                                <Transaction {...transaction}/>
+                            </li>
+                        )}
+                </ul> 
+                </div> 
+
+        )}
+        </div>
+          
         
         
 

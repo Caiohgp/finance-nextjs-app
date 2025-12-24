@@ -1,15 +1,6 @@
 import formatCurrency from "@/lib/format-currency";
+import { TransactionProps } from "@/types/transactions";
 import { HandCoins, Landmark, PiggyBank, Wallet } from "lucide-react";
-
-type TransactionProps = {
-    description: string;
-    value: number;
-    date: string;
-    type: 'Income' | 'Expense' | 'Investment' | 'Saving';
-
-    expenseType?: string;
-
-}
 
 const typesMap = {
 'Income': {

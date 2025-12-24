@@ -6,6 +6,7 @@ import LabelItem from "@/components/labelForm";
 import TextAreaItem from "@/components/textAreaForm";
 import InputItem from "@/components/inputForm";
 import SelectItem from "@/components/selectForm";
+import TransactionListSkeleton from "../../components/skeletonLoading";
 
 export default function Playground() {
     return (
@@ -78,6 +79,24 @@ export default function Playground() {
                     </div>
 
                     <Button props={{size: 'medium', text:'Submit'}}/>
+
+                    <div>
+                        <h2 className="mb-4 text-lg font-mono">Loading Skeleton</h2>
+                        <hr />
+                        <div className="space-y-8">
+                        <div className="flex space-x-4">
+                            <TransactionListSkeleton />
+                            <TransactionListSkeleton />
+                            <TransactionListSkeleton />
+                        </div>
+
+                        <div className="space-y-4">
+                            <TransactionListSkeleton />
+                            <TransactionListSkeleton />
+                            <TransactionListSkeleton />
+                        </div>
+                        </div>
+                    </div>
                     
                 </div>
             </div>

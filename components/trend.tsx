@@ -1,12 +1,7 @@
 import { useMemo } from "react";
 import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
 import formatCurrency from "@/lib/format-currency";
-
-type FinancialTrendProps = {
-    type: 'Income' | 'Expense' | 'Investment' | 'Saving';
-    value: number;
-    previousValue: number;
-}
+import { FinancialTrendProps } from "@/types/trends";
 
 const colorTypes: Record<string, string> = {
     'Income': 'text-green-700 dark:text-green-300',
@@ -35,8 +30,8 @@ export default function Trend(
     
     return (
         <div>
-            <div>
-                <div className="flex flex-col">
+            <div className="grid grid-cols gap-4">
+                <div className="md:flex md:flex-col">
                     <div className={`font-semibold ${colorTypes[type]}`}>{type}</div>                    
                     <div className="text-2xl font-semibold text-black dark:text-white mb-2">
                         {formattedCurrentValue}

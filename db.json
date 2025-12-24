@@ -23,6 +23,36 @@
       "description": "Salary",
       "expenseType": "",
       "date": "2023-03-15T23:00:00"
+    },
+    {
+      "id": 4,
+      "value": 500,
+      "type": "Expense",
+      "description": "Salary",
+      "expenseType": "",
+      "date": "2025-03-15T23:00:00"
+    }
+  ],
+   "trends": [
+    {
+      "type": "Income",
+      "value": 4000,
+      "previousValue": 3000
+    },
+    {
+      "type": "Expense",
+      "value": 4000,
+      "previousValue": 3000
+    },
+    {
+      "type": "Saving",
+      "value": 4000,
+      "previousValue": 3000
+    },
+    {
+      "type": "Investment",
+      "value": 4000,
+      "previousValue": 3000
     }
   ]
 }
