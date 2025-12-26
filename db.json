@@ -41,17 +41,17 @@
     },
     {
       "type": "Expense",
-      "value": 4000,
-      "previousValue": 3000
+      "value": 1000,
+      "previousValue": 5000
     },
     {
       "type": "Saving",
-      "value": 4000,
-      "previousValue": 3000
+      "value": 2000,
+      "previousValue": 1000
     },
     {
       "type": "Investment",
-      "value": 4000,
+      "value": 6000,
       "previousValue": 3000
     }
   ]

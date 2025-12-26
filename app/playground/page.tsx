@@ -7,6 +7,13 @@ import TextAreaItem from "@/components/textAreaForm";
 import InputItem from "@/components/inputForm";
 import SelectItem from "@/components/selectForm";
 import TransactionListSkeleton from "../../components/skeletonLoading";
+import { Metadata } from "next";
+import TransactionForm from "../dashboard/components/transactionForm";
+
+export const metadata: Metadata = {
+    title: "Playground",
+    description: "Playground Page",
+};
 
 export default function Playground() {
     return (
@@ -15,47 +22,47 @@ export default function Playground() {
             <hr />
             <div>
                 <div className="flex flex-container space-x-10">
-                    <Trend type="Income" value={2000} previousValue={1000}/>
-                    <Trend type="Expense" value={1000} previousValue={2000}/>
-                    <Trend type="Investment" value={1700} previousValue={2000}/>
-                    <Trend type="Saving" value={0} previousValue={0}/>
+                    <Trend type="Income" value={2000} previousValue={1000} />
+                    <Trend type="Expense" value={1000} previousValue={2000} />
+                    <Trend type="Investment" value={1700} previousValue={2000} />
+                    <Trend type="Saving" value={0} previousValue={0} />
                 </div>
 
                 <div className="flex flex-col space-y-5 mt-10">
-                    <Transaction description="Salary" type="Income" value={2000} date="2025-12-12"/>
-                    <Transaction description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12"/>
-                    <Transaction description="Investing in some random shit" type="Investment" value={300} date="2025-12-12"/>
-                    <Transaction description="Saving for my child school" type="Saving" value={500} date="2025-12-12"/>
+                    <Transaction description="Salary" type="Income" value={2000} date="2025-12-12" />
+                    <Transaction description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12" />
+                    <Transaction description="Investing in some random shit" type="Investment" value={300} date="2025-12-12" />
+                    <Transaction description="Saving for my child school" type="Saving" value={500} date="2025-12-12" />
                 </div>
- 
-                <div className="flex flex-col space-y-5 mt-10">
-                    <TransactionSummary value={6000} date="2025-12-12"/>
 
-                    <Transaction description="Salary" type="Income" value={2000} date="2025-12-12"/>
-                    <Transaction description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12"/>
-                    <Transaction description="Investing in some random shit" type="Investment" value={300} date="2025-12-12"/>
-                    <Transaction description="Saving for my child school" type="Saving" value={500} date="2025-12-12"/>
+                <div className="flex flex-col space-y-5 mt-10">
+                    <TransactionSummary value={6000} date="2025-12-12" />
+
+                    <Transaction description="Salary" type="Income" value={2000} date="2025-12-12" />
+                    <Transaction description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12" />
+                    <Transaction description="Investing in some random shit" type="Investment" value={300} date="2025-12-12" />
+                    <Transaction description="Saving for my child school" type="Saving" value={500} date="2025-12-12" />
                 </div>
 
                 <div className="space-x-4">
                     <h2>Buttons</h2>
-                    <Button props={{size: 'medium', text:'Click Me'}}/>
-                    <Button props={{variant: 'outline', size: 'small', text:'Click Me'}}/>
-                    <Button props={{size: 'large', text:'Click Me'}}/>
-                    <Button props={{variant: 'ghost', size: 'medium', text:'Click Me'}}/>
-                
+                    <Button size='medium' >Click Me</Button>
+                    <Button variant='outline' size='small'>Click Me</Button>
+                    <Button size='large'>Click Me</Button>
+                    <Button variant='ghost' size='medium'> Click Me</Button>
+
                 </div>
 
                 <div className="space-y-4">
                     <h2>Forms</h2>
-                    <div className="grid grid-cols-2 gap-4">  
+                    <div className="grid grid-cols-2 gap-4">
                         <LabelItem >
                             Name
-                            <InputItem type="text" placeholder="Name"/>
+                            <InputItem type="text" placeholder="Name" />
                         </LabelItem>
                         <LabelItem >
                             Email
-                            <InputItem type="email" placeholder="Email"/>
+                            <InputItem type="email" placeholder="Email" />
                         </LabelItem>
                         <LabelItem >
                             Combobox
@@ -65,7 +72,7 @@ export default function Playground() {
                                 <option>Option 2</option>
                             </SelectItem>
                         </LabelItem>
-                    
+
                         <LabelItem>
                             Free Text
                             <TextAreaItem placeholder="Insira o texto aqui" />
@@ -74,30 +81,35 @@ export default function Playground() {
                             <InputItem type="checkbox" id="terms" />
                             <LabelItem className="ml-2" htmlFor="terms">Accept terms</LabelItem>
                         </div>
-                        
+
 
                     </div>
 
-                    <Button props={{size: 'medium', text:'Submit'}}/>
+                    <Button size='medium'> Submit </Button>
 
                     <div>
                         <h2 className="mb-4 text-lg font-mono">Loading Skeleton</h2>
                         <hr />
                         <div className="space-y-8">
-                        <div className="flex space-x-4">
-                            <TransactionListSkeleton />
-                            <TransactionListSkeleton />
-                            <TransactionListSkeleton />
-                        </div>
+                            <div className="flex space-x-4">
+                                <TransactionListSkeleton />
+                                <TransactionListSkeleton />
+                                <TransactionListSkeleton />
+                            </div>
 
-                        <div className="space-y-4">
-                            <TransactionListSkeleton />
-                            <TransactionListSkeleton />
-                            <TransactionListSkeleton />
-                        </div>
+                            <div className="space-y-4">
+                                <TransactionListSkeleton />
+                                <TransactionListSkeleton />
+                                <TransactionListSkeleton />
+                            </div>
                         </div>
                     </div>
-                    
+
+                    <div>
+                        <h1>Transaction Form</h1>
+                        <TransactionForm/>
+                    </div>
+
                 </div>
             </div>
 

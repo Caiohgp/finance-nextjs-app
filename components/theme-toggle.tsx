@@ -1,6 +1,7 @@
 'use client'
 
 import { useTheme } from 'next-themes'
+import Button from './button'
 
 export function ThemeToggle() {
 
@@ -8,8 +9,8 @@ export function ThemeToggle() {
 
   return (
 
-    <button
-
+    <Button
+      variant="ghost" size='small'
       onClick={() =>  setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
       className="p-2 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
       aria-label="Alternar tema"
@@ -19,6 +20,6 @@ export function ThemeToggle() {
       <span suppressHydrationWarning>
         {resolvedTheme === 'dark' ? '🌞' : '🌙'}
       </span>
-    </button>
+    </Button>
   )
 }
