@@ -2,7 +2,7 @@ import Trend from "@/components/trend"
 import { FinancialTrendProps } from "@/types/trends"
 
 export default async function DashboardTrend() {
-    const response = await fetch('http://localhost:3100/trends')
+    const response = await fetch(`${process.env.API_URL}/trends`)
 
     const trends = await response.json()
     
