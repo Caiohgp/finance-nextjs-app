@@ -11,7 +11,8 @@ export const CATEGORY_TYPES = [
   'CAR',
   'HOUSE',
   'FUN',
-  'SUBSCRIPTION'
+  'SUBSCRIPTION',
+  'EDUCATION'
 ]
 
 export type TransactionType = typeof TRANSACTION_TYPES[number]

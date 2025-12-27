@@ -31,9 +31,30 @@
       "description": "Salary",
       "expenseType": "",
       "date": "2025-03-15T23:00:00"
+    },
+    {
+      "id": "ff7c",
+      "type": "Income",
+      "value": 12312,
+      "date": "2025-12-26T00:00:00",
+      "description": "Test"
+    },
+    {
+      "id": "6b3c",
+      "type": "Investment",
+      "value": 122,
+      "date": "2025-12-17T00:00:00",
+      "description": "Test Investment"
+    },
+    {
+      "id": "a5ff",
+      "type": "Investment",
+      "value": 4,
+      "date": "2025-12-28T00:00:00",
+      "description": "Investment"
     }
   ],
-   "trends": [
+  "trends": [
     {
       "type": "Income",
       "value": 4000,

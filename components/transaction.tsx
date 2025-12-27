@@ -35,16 +35,13 @@ export default function Transaction({description,value,date,type,expenseType}:Tr
             <span>{description}</span>
         </div>
 
-        <div className="min-w-[80px] hidden md:flex">
+        <div className="min-w-[150px] hidden md:flex">
             {expenseType && <div className="rounded-md bg-gray-700 dark:bg-gray-200 text-xs text-gray-200 dark:text-gray-800 px-2 py-0.5">
                 {expenseType.toUpperCase()}
             </div>}
         </div>
-        <div className="min-w-[170px] hidden md:flex">
-            {date}
-        </div>
 
-        <div className="min-w-[70px] text-right">
+        <div className="min-w-[100px] text-center">
             {formattedValue}
         </div>
         <div className="min-w-[30px] flex justify-end">

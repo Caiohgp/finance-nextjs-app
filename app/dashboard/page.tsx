@@ -32,7 +32,7 @@ export default function Dashboard() {
                         Summary
                     </h2>
 
-                    <Link href="/dashboard/transaction/add" className="flex rounded-md p-2 items-center bg-green-500">
+                    <Link href="/dashboard/transaction/add" className="flex rounded-md p-2 items-center bg-green-400 dark:bg-green-500">
                         <PlusCircle className="w-4 h-4 mr-1" />
                         Add 
                     </Link> 

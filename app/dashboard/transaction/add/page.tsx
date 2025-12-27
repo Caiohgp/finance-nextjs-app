@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import TransactionForm from "../../components/transactionForm";
 
 export const metadata: Metadata = {
   title: "Add Transaction",
@@ -7,6 +8,6 @@ export const metadata: Metadata = {
 
 export default function AddTransaction(){
     return(
-        <> Add Transaction </>
+        <TransactionForm/>
     )
 }

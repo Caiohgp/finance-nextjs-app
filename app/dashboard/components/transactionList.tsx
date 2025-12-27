@@ -59,7 +59,14 @@ function groupTransactionsWithTotals(transactions: TransactionProps[]): GroupedT
 
 export default async function TransactionList(){
     
-    const response = await fetch(`${process.env.API_URL}/transactions`, {cache: "no-store"})
+    const response = await fetch(
+      `${process.env.API_URL}/transactions`,
+      {
+        next: {
+          tags: ['transaction-list']
+        }
+      }
+    )
 
     const transactions = await response.json()
 
@@ -82,9 +89,6 @@ export default async function TransactionList(){
 
         )}
         </div>
-          
-        
-        
 
     )
 }
