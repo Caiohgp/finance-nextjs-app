@@ -1,86 +1,66 @@
-import Transaction from "@/components/transaction"
+'use client'
+
+import { useState } from "react";
+import Button from "@/components/button";
 import TransactionSummary from "@/components/transactionSummary";
-import { getTransactionsFilteredByDate } from "@/lib/actions";
+import Transaction from "@/components/transaction";
+import { TransactionProps } from "@/types/transactions";
+import { getTransactionsFilteredByDateAndLimit } from "@/lib/actions";
+import groupTransactionsWithTotals from "@/utils/groupTransactions"
 
-type TransactionProps = {
-    id : string,
-    value: number,
-    type: 'Income' | 'Expense' | 'Investment' | 'Saving';
-    description : string,
-    expenseType: string,
-    date: string
-}
+export default function TransactionList({startDate,transactions} : {startDate : Date, transactions : TransactionProps[]}){
 
-type GroupedTransaction = {
-  date: string
-  transactions: TransactionProps[]
-  total: number
-  income: number
-  expense: number
-}
+  const [transactionsList, setTransactionsList] = useState<TransactionProps[]>(transactions)
+  const [loading, setLoading] = useState(false)
+  const [offset, setOffset] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
+  const limit = 3
+  
+  const fetchTransactions = async (newOffset: number) => {
+    console.log(newOffset)
+    console.log(limit)
+    setLoading(true)
+    const res = await getTransactionsFilteredByDateAndLimit(startDate,newOffset,limit)
 
-function groupTransactionsWithTotals(transactions: TransactionProps[]): GroupedTransaction[] {
-  const grouped: { [date: string]: TransactionProps[] } = {}
-
-  transactions.forEach(transaction => {
-    const date = transaction.date.split('T')[0]
-    
-    if (!grouped[date]) {
-      grouped[date] = []
+    console.log(res)
+    if (newOffset === 0) {
+      setTransactionsList(res)
+    } else {
+      setTransactionsList(prev => [...prev, ...res])
     }
-        grouped[date].push(transaction)
-    })
 
-    const result = Object.entries(grouped).map(([date, transactionsOfDay]) => {
+    if (res.length < limit) setHasMore(false)
 
-    const income = transactionsOfDay
-      .filter(t => t.type === 'Income')
-      .reduce((sum, t) => sum + t.value, 0)
-    
-    const expense = transactionsOfDay
-      .filter(t => t.type === 'Expense')
-      .reduce((sum, t) => sum + t.value, 0)
-    
-    const total = income - expense
+    setLoading(false)
+  }
 
-    return {
-      date,
-      transactions: transactionsOfDay,
-      total,
-      income,
-      expense
-    }
-  })
+  const handleLoadMore = () => {
+    const nextOffset = offset + limit
+    setOffset(nextOffset)
+    fetchTransactions(nextOffset)
+  }
+  console.log(transactionsList)
+  const groupedTransactions = groupTransactionsWithTotals(transactionsList ?? [])
 
-  // Ordena por data (mais recente primeiro)
-  return result.sort((a, b) => 
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
-}
+  return (
+    <div className="space-y-8 mb-8">
+      {groupedTransactions.map(transaction  => 
+          <div className="my-8" key={transaction.date}>
+            <TransactionSummary date={transaction.date} value={transaction.total}  />
+            <hr/>
+            <ul className="mt-8 flex flex-col space-y-4">
+                {transaction.transactions.map((transaction: TransactionProps)  => 
+                    <li key={transaction.id}>
+                        <Transaction {...transaction}/>
+                    </li>
+                )}
+            </ul> 
+          </div> 
 
-export default async function TransactionList({startDate} : {startDate : Date}){
+      )}
+      <Button disabled={!hasMore || loading} className="justify-center" variant="ghost" onClick={handleLoadMore}>Load More</Button>
 
-    const transactions = await getTransactionsFilteredByDate(startDate)
-
-    const groupedTransactions = groupTransactionsWithTotals(transactions ?? [])
-
-    return (
-        <div>
-            {groupedTransactions.map(transaction  => 
-                <div className="my-8" key={transaction.date}>
-                    <TransactionSummary date={transaction.date} value={transaction.total}  />
-                    <hr/>
-                    <ul className="mt-8 flex flex-col space-y-4">
-                        {transaction.transactions.map((transaction: TransactionProps)  => 
-                            <li key={transaction.id}>
-                                <Transaction {...transaction}/>
-                            </li>
-                        )}
-                </ul> 
-                </div> 
-
-        )}
-        </div>
+    </div>
 
     )
 }

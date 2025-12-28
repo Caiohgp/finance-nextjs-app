@@ -8,6 +8,25 @@ export async function purgeTransactionListCache() {
   revalidateTag('transaction-list','')
 }
 
+
+export async function getTransactionsFilteredByDateAndLimit(startDate : Date, offset : number, limit : number){
+  
+  const supabase = await createClient()
+
+    const { data: transactions, error } = await supabase
+            .from('transactions')
+            .select()
+            .gte("date", startDate.toISOString())
+            .range(offset, offset + limit - 1)
+            .order('created_at', {ascending: false})
+
+    if (error) {
+      throw new Error('Error Fetching transactions: ' + error.message)
+    }
+
+    return transactions
+}
+
 export async function getTransactionsFilteredByDate(startDate : Date){
     const supabase = await createClient()
 

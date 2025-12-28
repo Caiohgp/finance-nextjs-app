@@ -9,6 +9,7 @@ import { Metadata } from "next";
 import { ErrorBoundary } from "react-error-boundary";
 import Range from "./components/range";
 import { getStartDate } from "@/utils/getDateRange";
+import TransactionListWrapper from "./components/transactionListWrapper";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -60,7 +61,7 @@ export default async function Page({ searchParams } : { searchParams : Dashboard
                 <div>
                     <ErrorBoundary fallback={<h2>Something went wrong</h2>}>
                         <Suspense fallback={<TransactionListFallback/>}>
-                            <TransactionList startDate={dateRange}/>
+                            <TransactionListWrapper startDate={dateRange}/>
                         </Suspense>
                     </ErrorBoundary>
     

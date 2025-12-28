@@ -17,7 +17,7 @@ export default function Range(){
     }
     
     return(
-        <SelectItem className="min-w-[150px]" defaultValue={range} onChange={handleChange}>
+        <SelectItem className="min-w-[150px]" value={range} onChange={handleChange}>
             <option value="today">Today</option>
             <option value="week">7 days</option>
             <option value="month">1 Month</option>
