@@ -1,5 +1,6 @@
 import Transaction from "@/components/transaction"
 import TransactionSummary from "@/components/transactionSummary";
+import { getTransactionsFilteredByDate } from "@/lib/actions";
 
 type TransactionProps = {
     id : string,
@@ -57,20 +58,11 @@ function groupTransactionsWithTotals(transactions: TransactionProps[]): GroupedT
   )
 }
 
-export default async function TransactionList(){
-    
-    const response = await fetch(
-      `${process.env.API_URL}/transactions`,
-      {
-        next: {
-          tags: ['transaction-list']
-        }
-      }
-    )
+export default async function TransactionList({startDate} : {startDate : Date}){
 
-    const transactions = await response.json()
+    const transactions = await getTransactionsFilteredByDate(startDate)
 
-    const groupedTransactions = groupTransactionsWithTotals(transactions)
+    const groupedTransactions = groupTransactionsWithTotals(transactions ?? [])
 
     return (
         <div>

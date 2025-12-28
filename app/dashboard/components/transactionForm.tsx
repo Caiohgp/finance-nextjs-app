@@ -5,13 +5,14 @@ import InputItem from "@/components/inputForm";
 import LabelItem from "@/components/labelForm";
 import SelectItem from "@/components/selectForm";
 import { TRANSACTION_TYPES, CATEGORY_TYPES } from "@/lib/types";
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { transactionSchema } from "@/lib/validator";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { purgeTransactionListCache } from "@/lib/actions";
+import { createTransaction } from "@/lib/actions";
 import ErrorForm from "@/components/error-form";
+import { TransactionProps } from "@/types/transactions";
 
 export default function TransactionForm() {
 
@@ -28,26 +29,18 @@ export default function TransactionForm() {
     const type = watch('type')
     const isExpense = type === 'Expense'
     const [isSaving, setSaving] = useState(false)
+    const [error, setError] = useState<Error | null>(null)    
     const router = useRouter()
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onSubmit: SubmitHandler<FieldValues> = async (data: any) => {
+    const onSubmit: SubmitHandler<TransactionProps> = async (data) => {
         setSaving(true)
-        console.log(data)
-        console.log(process.env.NEXT_PUBLIC_API_URL)
         try {
-            await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...data,
-                    date: `${data.date}T00:00:00`
-                })
-            })
-            await purgeTransactionListCache()
+
+            createTransaction(data)
             router.push('/dashboard')
+
+        }catch (err) {
+            setError(err instanceof Error ? err : new Error('Unknown Error'))
         }
         finally {
             setSaving(false)
@@ -73,6 +66,20 @@ export default function TransactionForm() {
 
             <div>
                 <LabelItem>
+                    Category of expense
+                    <SelectItem disabled={!isExpense} {...register('expenseType')}>
+                        <option value="">Select a Category of expenses</option>
+                        {CATEGORY_TYPES.map(type =>
+                            <option key={type} value={type}>
+                                {type}
+                            </option>
+                        )}
+                    </SelectItem>
+                </LabelItem>
+            </div>
+
+            <div>
+                <LabelItem>
                     Value
                     <InputItem {...register('value', { valueAsNumber: true })} type="number" placeholder="Transaction Value"></InputItem>
                 </LabelItem>
@@ -87,22 +94,6 @@ export default function TransactionForm() {
                 <ErrorForm error={errors.date}/>
             </div>
 
-            <div>
-                {isExpense && (
-                    <LabelItem>
-                        Category of expense
-                        <SelectItem {...register('expenseType')}>
-                            <option value="">Select a Category of expenses</option>
-                            {CATEGORY_TYPES.map(type =>
-                                <option key={type} value={type}>
-                                    {type}
-                                </option>
-                            )}
-                        </SelectItem>
-                    </LabelItem>
-                )}
-            </div>
-
             <div className="col-span-1 md:col-span-2">
                 <LabelItem>
                     Description
@@ -112,7 +103,10 @@ export default function TransactionForm() {
             </div>
 
         </div>
-        <div className="my-8">
+        <div className="my-8 flex justify-between">
+            <div>
+                {error && <ErrorForm error={error} />}
+            </div>
             <Button variant="default" disabled={isSaving}>Save</Button>
         </div>
     </form>
