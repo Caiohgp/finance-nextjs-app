@@ -6,6 +6,6 @@ export type TransactionProps = {
     value: number;
     date: string;
     type: TransactionType;
-
     expenseType?: string;
+    onDelete?: () => void
 }

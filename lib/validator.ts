@@ -16,6 +16,13 @@ export const transactionSchema = z.object({
 
     date: z.string({
         message: 'Date is required',
+    }) .refine((val) => {
+      const inputDate = new Date(val)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      return inputDate <= today
+    }, {
+      message: "Date is required and cannot be in the future",
     }),
 
     expenseType: z.string().optional(),

@@ -1,8 +1,9 @@
 'use server'
 import { TransactionProps } from '@/types/transactions'
-import { revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from './supabase/server'
 import { transactionSchema } from './validator'
+import { TransactionFormData } from '@/app/dashboard/components/transactionEditModal'
 
 export async function purgeTransactionListCache() {
   revalidateTag('transaction-list','')
@@ -63,4 +64,52 @@ export async function createTransaction(data : TransactionProps){
 
           await purgeTransactionListCache()
 
+}
+
+export async function deleteTransaction(id : string){
+  
+  const supabase = await createClient()
+
+    const { error } = await supabase
+            .from('transactions')
+            .delete()
+            .eq("id", id)
+
+    if (error) {
+      throw new Error('Error Fetching transactions: ' + error.message)
+    }
+
+    revalidatePath('/dashboard')
+
+}
+
+export async function updateTransaction(
+  id: string, 
+  data: TransactionFormData
+) {
+  try {
+    const supabase = await createClient()
+
+    const { data: updatedTransaction, error } = await supabase
+      .from('transactions')
+      .update(data)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Erro ao atualizar transação:', error)
+      throw new Error(error.message)
+    }
+
+    revalidatePath('/dashboard')
+
+    return { success: true, data: updatedTransaction }
+  } catch (error) {
+    console.error('Erro na action:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Erro desconhecido' 
+    }
+  }
 }
