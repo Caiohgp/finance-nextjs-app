@@ -7,8 +7,11 @@ import { TransactionProps } from '@/types/transactions'
 import Button from '@/components/button'
 import SelectItem from '@/components/selectForm'
 import LabelItem from '@/components/labelForm'
-import { TRANSACTION_TYPES } from '@/lib/types'
+import { CATEGORY_TYPES } from '@/lib/types'
 import InputItem from '@/components/inputForm'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { updateTransactionSchema } from '@/lib/validator'
+import ErrorForm from '@/components/error-form'
 
 export type TransactionFormData = {
   description: string
@@ -31,26 +34,39 @@ export default function TransactionEditModal({
     }) {
   const [loading, setLoading] = useState(false)
   
-  const { register, handleSubmit } = useForm<TransactionFormData>({
+  const { 
+    register, 
+    handleSubmit,
+    formState: { errors } // ← Pega os erros de validação
+  } = useForm<TransactionFormData>({
+    resolver: zodResolver(updateTransactionSchema), // ← Adiciona o resolver
     defaultValues: {
       description: transaction.description,
       value: transaction.value,
       type: transaction.type,
-      expenseType: transaction.expenseType
+      expenseType: transaction.expenseType,
+      date: transaction.date.split('T')[0]
     }
   })
 
+  
   const onSubmit = async (data: TransactionFormData) => {
     setLoading(true)
     try {
-      await updateTransaction(transaction.id, data)
-      onUpdate({ ...transaction, ...data })
-      onClose()
+      const result = await updateTransaction(transaction.id, data)
+      
+      if (result.success) {
+        onUpdate({ ...transaction, ...data })
+        onClose()
+      } else {
+        alert(result.error)
+      }
     } catch (error) {
       console.error('Erro ao atualizar:', error)
     } finally {
       setLoading(false)
     }
+    
   }
 
   if (!isOpen) return null
@@ -67,6 +83,8 @@ export default function TransactionEditModal({
               {...register('description')}
               className="w-full p-2 border rounded dark:bg-gray-700"
             />
+            <ErrorForm error={errors.description}/>
+            
           </div>
 
           <div>
@@ -77,14 +95,30 @@ export default function TransactionEditModal({
               {...register('value', { valueAsNumber: true })}
               className="w-full p-2 border rounded dark:bg-gray-700"
             />
+            <ErrorForm error={errors.value}/>
+            
           </div>
 
           <div>
             <LabelItem>
                 Transaction Type
-                <SelectItem {...register('type')}>
-                    <option value="">Select a Type</option>
-                    {TRANSACTION_TYPES.map(type =>
+                <InputItem disabled
+              type="text"
+              step="0.01"
+              {...register('type')}
+              className="w-full p-2 border rounded dark:bg-gray-700"
+            />
+            </LabelItem>
+            <ErrorForm error={errors.type}/>
+            
+          </div>
+
+          <div>
+            <LabelItem>
+                Category of expense
+                <SelectItem disabled={transaction.type !== 'Expense'} {...register('expenseType')}>
+                    <option value="">Select a Category of expenses</option>
+                    {CATEGORY_TYPES.map(type =>
                         <option key={type} value={type}>
                             {type}
                         </option>
@@ -99,6 +133,8 @@ export default function TransactionEditModal({
                 type="date" {...register('date')}
               className="w-full p-2 border rounded dark:bg-gray-700"
             />
+            <ErrorForm error={errors.date}/>
+
           </div>
 
           <div className="flex gap-2 pt-4">
