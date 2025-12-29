@@ -17,17 +17,18 @@ export default function TransactionList({startDate,transactions, limit} : {start
 
   const [transactionsList, setTransactionsList] = useState<TransactionProps[]>(transactions)
   const [loading, setLoading] = useState(false)
-  const [offset, setOffset] = useState(0)
   const [buttonHidden, setButtonHidden] = useState(transactions.length === 0)
 
   const fetchTransactions = async (newOffset: number) => {
 
     setLoading(true)
+
     const res = await getTransactionsFilteredByDateAndLimit(startDate,newOffset,limit)
 
     setButtonHidden(res.length ===0 )
 
     console.log(res)
+
     if (newOffset === 0) {
       setTransactionsList(res)
     } else {
@@ -39,18 +40,26 @@ export default function TransactionList({startDate,transactions, limit} : {start
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOffset(0)
     fetchTransactions(0)
   }, [rangeParam])
 
   const handleLoadMore = () => {
-    const nextOffset = offset + limit
-    setOffset(nextOffset)
-    fetchTransactions(nextOffset)
+    fetchTransactions(transactionsList.length)
   }
 
+  const handleDelete = async (id: string) => {
+    try {
+      setTransactionsList(prev => prev.filter(t => t.id !== id))
+    } catch (error) {
+      console.error('Erro ao deletar:', error)
+    }
+  }
 
-
+  const handleUpdate = (id: string, updated: TransactionProps) => {
+    setTransactionsList(prev => 
+      prev.map(t => t.id === id ? { ...t, ...updated } : t)
+    )
+  } 
   const groupedTransactions = groupTransactionsWithTotals(transactionsList ?? [])
 
   return (
@@ -65,7 +74,8 @@ export default function TransactionList({startDate,transactions, limit} : {start
             <ul className="mt-8 flex flex-col space-y-4">
                 {transaction.transactions.map((transaction: TransactionProps)  => 
                     <li key={transaction.id}>
-                        <Transaction {...transaction}/>
+                        <Transaction {...transaction} onDelete={() => handleDelete(transaction.id)}
+                          onUpdate={(updated) => handleUpdate(transaction.id, updated)}/>
                     </li>
                 )}
             </ul> 
