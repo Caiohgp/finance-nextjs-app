@@ -18,7 +18,7 @@ export async function getTransactionsFilteredByDateAndLimit(startDate : Date, of
             .select()
             .gte("date", startDate.toISOString())
             .range(offset, offset + limit - 1)
-            .order('created_at', {ascending: false})
+            .order('date', {ascending: false})
 
     if (error) {
       throw new Error('Error Fetching transactions: ' + error.message)
@@ -34,7 +34,7 @@ export async function getTransactionsFilteredByDate(startDate : Date){
             .from('transactions')
             .select()
             .gte("date", startDate.toISOString())
-            .order('created_at', {ascending: false})
+            .order('date', {ascending: false})
 
     if (error) {
       throw new Error('Error Fetching transactions: ' + error.message)

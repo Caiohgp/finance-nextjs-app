@@ -10,6 +10,5 @@ export default async function TransactionListWrapper({startDate} : {startDate : 
 
           <TransactionList startDate={startDate} transactions={transactions}></TransactionList>
 
-
     )
 }

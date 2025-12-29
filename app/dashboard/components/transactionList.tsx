@@ -1,26 +1,32 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/button";
 import TransactionSummary from "@/components/transactionSummary";
 import Transaction from "@/components/transaction";
 import { TransactionProps } from "@/types/transactions";
 import { getTransactionsFilteredByDateAndLimit } from "@/lib/actions";
 import groupTransactionsWithTotals from "@/utils/groupTransactions"
+import { useSearchParams } from "next/navigation";
+import { Loader } from "lucide-react"
 
 export default function TransactionList({startDate,transactions} : {startDate : Date, transactions : TransactionProps[]}){
+
+  const searchParams = useSearchParams()
+  const rangeParam = searchParams.get("range") ?? "month"
 
   const [transactionsList, setTransactionsList] = useState<TransactionProps[]>(transactions)
   const [loading, setLoading] = useState(false)
   const [offset, setOffset] = useState(0)
-  const [hasMore, setHasMore] = useState(true)
-  const limit = 3
-  
+  const [buttonHidden, setButtonHidden] = useState(transactions.length === 0)
+  const limit = 5
+
   const fetchTransactions = async (newOffset: number) => {
-    console.log(newOffset)
-    console.log(limit)
+
     setLoading(true)
     const res = await getTransactionsFilteredByDateAndLimit(startDate,newOffset,limit)
+
+    setButtonHidden(res.length ===0 )
 
     console.log(res)
     if (newOffset === 0) {
@@ -29,21 +35,28 @@ export default function TransactionList({startDate,transactions} : {startDate : 
       setTransactionsList(prev => [...prev, ...res])
     }
 
-    if (res.length < limit) setHasMore(false)
-
     setLoading(false)
   }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setOffset(0)
+    fetchTransactions(0)
+  }, [rangeParam])
 
   const handleLoadMore = () => {
     const nextOffset = offset + limit
     setOffset(nextOffset)
     fetchTransactions(nextOffset)
   }
-  console.log(transactionsList)
+
   const groupedTransactions = groupTransactionsWithTotals(transactionsList ?? [])
 
   return (
     <div className="space-y-8 mb-8">
+
+      {groupedTransactions.length === 0 && <div className="text-center text-gray-400 dark:text-gray-500">No transactions found</div>}
+      
       {groupedTransactions.map(transaction  => 
           <div className="my-8" key={transaction.date}>
             <TransactionSummary date={transaction.date} value={transaction.total}  />
@@ -58,7 +71,15 @@ export default function TransactionList({startDate,transactions} : {startDate : 
           </div> 
 
       )}
-      <Button disabled={!hasMore || loading} className="justify-center" variant="ghost" onClick={handleLoadMore}>Load More</Button>
+      <div className="flex justify-center">
+        
+        <Button disabled={loading || buttonHidden} className="justify-center" variant="ghost" onClick={handleLoadMore}>
+          <div className="flex items-center space-x-1">
+            {loading && <Loader className="animate-spin" />} Load More
+          </div>
+        </Button>
+      </div>
+      
 
     </div>
 
