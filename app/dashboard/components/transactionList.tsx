@@ -10,7 +10,7 @@ import groupTransactionsWithTotals from "@/utils/groupTransactions"
 import { useSearchParams } from "next/navigation";
 import { Loader } from "lucide-react"
 
-export default function TransactionList({startDate,transactions} : {startDate : Date, transactions : TransactionProps[]}){
+export default function TransactionList({startDate,transactions, limit} : {startDate : Date, transactions : TransactionProps[], limit : number}){
 
   const searchParams = useSearchParams()
   const rangeParam = searchParams.get("range") ?? "month"
@@ -19,7 +19,6 @@ export default function TransactionList({startDate,transactions} : {startDate : 
   const [loading, setLoading] = useState(false)
   const [offset, setOffset] = useState(0)
   const [buttonHidden, setButtonHidden] = useState(transactions.length === 0)
-  const limit = 5
 
   const fetchTransactions = async (newOffset: number) => {
 
@@ -49,6 +48,8 @@ export default function TransactionList({startDate,transactions} : {startDate : 
     setOffset(nextOffset)
     fetchTransactions(nextOffset)
   }
+
+
 
   const groupedTransactions = groupTransactionsWithTotals(transactionsList ?? [])
 

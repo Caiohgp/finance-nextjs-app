@@ -8,9 +8,6 @@ export default function Header() {
                 <Link href="/dashboard" className="text-2xl font-bold">
                     App
                 </Link>
-                <Link href="/playground" className="text-2xl font-bold">
-                    Playground
-                </Link>
             </div>
 
             <div>

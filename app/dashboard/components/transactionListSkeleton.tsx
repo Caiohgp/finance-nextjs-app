@@ -1,6 +1,6 @@
 import Skeleton from "@/components/skeletonLoading"
 
-export default function TransactionListFallback() {
+export default function TransactionListSkeleton() {
   return <div className="space-y-8">
     <div className="space-y-4">
       <TransactionSummaryItemSkeleton />

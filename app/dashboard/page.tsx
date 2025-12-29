@@ -1,6 +1,4 @@
-import TransactionList from "./components/transactionList";
 import { Suspense } from "react";
-import TransactionListFallback from "./components/transactionListSkeleton";
 import DashboardTrend from "./components/dashboardTrend";
 import TrendFallback from "./components/trendSkeleton";
 import Link from "next/link";
@@ -10,6 +8,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import Range from "./components/range";
 import { getStartDate } from "@/utils/getDateRange";
 import TransactionListWrapper from "./components/transactionListWrapper";
+import TransactionListSkeleton from "./components/transactionListSkeleton";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -60,7 +59,7 @@ export default async function Page({ searchParams } : { searchParams : Dashboard
 
                 <div>
                     <ErrorBoundary fallback={<h2>Something went wrong</h2>}>
-                        <Suspense fallback={<TransactionListFallback/>}>
+                        <Suspense fallback={<TransactionListSkeleton/>}>
                             <TransactionListWrapper startDate={dateRange}/>
                         </Suspense>
                     </ErrorBoundary>
