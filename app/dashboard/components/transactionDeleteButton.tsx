@@ -24,7 +24,7 @@ export default function TransactionDeleteButton({id,onDelete}:{id : string,onDel
             console.log(id)
             setLoading(confirm)
             await deleteTransaction(id)
-                        // ✅ CHAMA onDelete APÓS DELETAR COM SUCESSO
+
             if (onDelete) {
                 onDelete()
             }

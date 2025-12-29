@@ -49,15 +49,15 @@ export default function TransactionList({startDate,transactions, limit} : {start
 
   const handleDelete = async (id: string) => {
     try {
-      setTransactionsList(prev => prev.filter(t => t.id !== id))
+      setTransactionsList(prev => prev.filter(deletedTransaction => deletedTransaction.id !== id))
     } catch (error) {
-      console.error('Erro ao deletar:', error)
+      throw new Error('Error while deleting the transaction:')
     }
   }
 
   const handleUpdate = (id: string, updated: TransactionProps) => {
     setTransactionsList(prev => 
-      prev.map(t => t.id === id ? { ...t, ...updated } : t)
+      prev.map(editedTransaction => editedTransaction.id === id ? { ...editedTransaction, ...updated } : editedTransaction)
     )
   } 
   const groupedTransactions = groupTransactionsWithTotals(transactionsList ?? [])
