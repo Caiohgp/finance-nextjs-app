@@ -5,6 +5,7 @@ import { createClient } from './supabase/server'
 import { transactionSchema } from './validator'
 import { TransactionFormData } from '@/app/dashboard/components/transactionEditModal'
 import { LoginForm } from '@/app/(auth)/login/components/loginform'
+import { redirect } from 'next/navigation' // Adicione este import
 
 export async function purgeTransactionListCache() {
   revalidateTag('transaction-list','')
@@ -114,6 +115,27 @@ export async function updateTransaction(
   }
 }
 
-export async function login(formData : LoginForm){
-    console.log('Login:')
+export async function login(formData: LoginForm) {
+  const supabase = await createClient()
+
+  const data = {
+    email: formData.email,
+    password: formData.password
+  }
+
+  const { error } = await supabase.auth.signInWithPassword(data)
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/dashboard')
+}
+
+export async function signout() {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+  revalidatePath('/', 'layout')
+  redirect('/login')
 }

@@ -3,7 +3,6 @@
 import Button from '@/components/button'
 import LabelItem from '@/components/labelForm'
 import { login } from '@/lib/actions'
-import router from 'next/router'
 import { useState } from 'react'
 
 export type LoginForm = {
@@ -22,17 +21,14 @@ export default function LoginForm() {
     setError('')
     setLoading(true)
 
-    await login({ email, password })
-
     try {
-    console.log(email)
-      
-            
-      //await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      //router.push('/dashboard')
+      const result = await login({ email, password })
+
+      if (result?.error)
+        setError(result.error)
+
     } catch (err) {
-      setError('Incorrect email or password.')
+      setError('Something wrong happened')
     } finally {
       setLoading(false)
     }
@@ -93,7 +89,6 @@ export default function LoginForm() {
             />
           </div>
 
-          {/* Error Message */}
           {error && (
             <div className="p-3 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-sm">
               {error}
@@ -133,7 +128,6 @@ export default function LoginForm() {
             )}
           </Button>
 
-          {/* Footer Links */}
           <div className="text-center space-y-2 text-sm">
             <a 
               href="/forgot-password" 
