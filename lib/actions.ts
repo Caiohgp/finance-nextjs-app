@@ -4,11 +4,11 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from './supabase/server'
 import { transactionSchema } from './validator'
 import { TransactionFormData } from '@/app/dashboard/components/transactionEditModal'
+import { LoginForm } from '@/app/(auth)/login/components/loginform'
 
 export async function purgeTransactionListCache() {
   revalidateTag('transaction-list','')
 }
-
 
 export async function getTransactionsFilteredByDateAndLimit(startDate : Date, offset : number, limit : number){
   
@@ -112,4 +112,8 @@ export async function updateTransaction(
       error: error instanceof Error ? error.message : 'Erro desconhecido' 
     }
   }
+}
+
+export async function login(formData : LoginForm){
+    console.log('Login:')
 }
