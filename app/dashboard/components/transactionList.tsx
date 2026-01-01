@@ -27,8 +27,6 @@ export default function TransactionList({startDate,transactions, limit} : {start
 
     setButtonHidden(res.length ===0 )
 
-    console.log(res)
-
     if (newOffset === 0) {
       setTransactionsList(res)
     } else {

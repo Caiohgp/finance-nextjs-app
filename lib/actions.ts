@@ -114,28 +114,46 @@ export async function updateTransaction(
     }
   }
 }
-
 export async function login(formData: LoginForm) {
-  const supabase = await createClient()
-
-  const data = {
+  const supabase = await createClient();
+  
+  const authData = {
     email: formData.email,
     password: formData.password
-  }
+  };
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithPassword(authData);
 
   if (error) {
-    return { error: error.message }
+    console.error("Erro na autenticação:", error.message);
+    return { error: error.message };
+  }
+
+  revalidatePath('/', 'layout');
+  redirect('/dashboard');
+}
+
+export async function logout() {
+  const supabase = await createClient()
+  const {error} = await supabase.auth.signOut()
+
+   if (error) {
+    console.error("Erro na autenticação:", error.message);
+    return { error: error.message };
   }
 
   revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  redirect('/login')
 }
 
-export async function signout() {
-  const supabase = await createClient()
-  await supabase.auth.signOut()
-  revalidatePath('/', 'layout')
-  redirect('/login')
+export async function getCurrentUser() {
+  const supabase = await createClient(); //
+  
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    return null;
+  }
+
+  return user;
 }

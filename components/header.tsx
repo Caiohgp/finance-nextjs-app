@@ -1,7 +1,18 @@
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
+import { createClient } from "@/lib/supabase/server";
+import LogoutButton from "./logoutButton";
+import Button from "./button";
+import {CircleUser} from "lucide-react"
 
-export default function Header() {
+export default async function Header() {
+
+    const supabase = await createClient();
+    
+    const {data: {user}, error} = await supabase.auth.getUser()
+    
+    console.log("Header:", user)
+
     return (
         <header className="align-center my-4 flex justify-between">
             <div className="space-x-6">
@@ -10,8 +21,19 @@ export default function Header() {
                 </Link>
             </div>
 
-            <div>
-                <ThemeToggle/> | User dropdown
+            <div className="flex space-x-6 items-center">
+                <ThemeToggle/>
+                
+                <div >
+                    <Button variant="ghost" className="flex space-x-6">
+                        <CircleUser className="w-6 h-6" />
+                        {user && user.email}
+                    </Button>
+                </div>
+                {!user && <Link href="/login" className="text-2xl font-bold">
+                        Login
+                    </Link>}
+                {user && <LogoutButton/>}
             </div>
 
         </header>
