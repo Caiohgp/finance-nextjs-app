@@ -25,7 +25,7 @@ export default function LogoutButton() {
         
     }
     return (
-        <Button onClick={handleLogout}>
+        <Button onClick={handleLogout} variant="ghost">
             {!isSigningOut && <LogOut className="w-6 h-6" />}
             {isSigningOut && <Loader className="animate-spin" />}
         </Button>

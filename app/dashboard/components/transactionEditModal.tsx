@@ -18,7 +18,7 @@ export type TransactionFormData = {
   value: number
   type: 'Income' | 'Expense' | 'Investment' | 'Saving'
   expenseType?: string
-  date?: string
+  date: string
 }
 
 export default function TransactionEditModal({ 
@@ -37,9 +37,9 @@ export default function TransactionEditModal({
   const { 
     register, 
     handleSubmit,
-    formState: { errors } // ← Pega os erros de validação
+    formState: { errors }
   } = useForm<TransactionFormData>({
-    resolver: zodResolver(updateTransactionSchema), // ← Adiciona o resolver
+    resolver: zodResolver(updateTransactionSchema),
     defaultValues: {
       description: transaction.description,
       value: transaction.value,

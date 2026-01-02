@@ -4,8 +4,7 @@ import { TRANSACTION_TYPES } from '@/lib/types'
 export const transactionSchema = z.object({
 
    type: z.enum(TRANSACTION_TYPES, {
-      message: 'Transaction type is required',
-      invalid_type_error: 'Invalid transaction type',
+      message: 'Transaction type is required'
     }),
 
     value: z
@@ -47,8 +46,7 @@ export const transactionSchema = z.object({
 
 export const updateTransactionSchema = z.object({
   type: z.enum(TRANSACTION_TYPES, {
-    message: 'Transaction type is required',
-    invalid_type_error: 'Invalid transaction type',
+    message: 'Transaction type is required'
   }),
   value: z.number({
     message: 'This field must be a number.',

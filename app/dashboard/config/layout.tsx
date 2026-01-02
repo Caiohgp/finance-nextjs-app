@@ -1,4 +1,3 @@
-import Header from "@/components/header"
 import SideNavigation from "./components/sideNavigation"
 
 export default function PageLayout({children}: {

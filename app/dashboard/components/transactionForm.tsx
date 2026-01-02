@@ -4,7 +4,7 @@ import Button from "@/components/button";
 import InputItem from "@/components/inputForm";
 import LabelItem from "@/components/labelForm";
 import SelectItem from "@/components/selectForm";
-import { TRANSACTION_TYPES, CATEGORY_TYPES } from "@/lib/types";
+import { TRANSACTION_TYPES, CATEGORY_TYPES, TransactionType } from "@/lib/types";
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { transactionSchema } from "@/lib/validator";
@@ -12,7 +12,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createTransaction } from "@/lib/actions";
 import ErrorForm from "@/components/error-form";
-import { TransactionProps } from "@/types/transactions";
+
+export type TransactionAddProps = {
+    description: string;
+    value: number;
+    date: string;
+    type: TransactionType;
+    expenseType?: string;
+}
+
 
 export default function TransactionForm() {
 
@@ -32,7 +40,7 @@ export default function TransactionForm() {
     const [error, setError] = useState<Error | null>(null)    
     const router = useRouter()
 
-    const onSubmit: SubmitHandler<TransactionProps> = async (data) => {
+    const onSubmit: SubmitHandler<TransactionAddProps> = async (data) => {
         setSaving(true)
         try {
 

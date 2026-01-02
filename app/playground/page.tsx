@@ -29,19 +29,19 @@ export default function Playground() {
                 </div>
 
                 <div className="flex flex-col space-y-5 mt-10">
-                    <Transaction description="Salary" type="Income" value={2000} date="2025-12-12" />
-                    <Transaction description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12" />
-                    <Transaction description="Investing in some random shit" type="Investment" value={300} date="2025-12-12" />
-                    <Transaction description="Saving for my child school" type="Saving" value={500} date="2025-12-12" />
+                    <Transaction id="1" description="Salary" type="Income" value={2000} date="2025-12-12" />
+                    <Transaction id="2" description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12" />
+                    <Transaction id="3" description="Investing in some random shit" type="Investment" value={300} date="2025-12-12" />
+                    <Transaction id="4" description="Saving for my child school" type="Saving" value={500} date="2025-12-12" />
                 </div>
 
                 <div className="flex flex-col space-y-5 mt-10">
                     <TransactionSummary value={6000} date="2025-12-12" />
 
-                    <Transaction description="Salary" type="Income" value={2000} date="2025-12-12" />
-                    <Transaction description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12" />
-                    <Transaction description="Investing in some random shit" type="Investment" value={300} date="2025-12-12" />
-                    <Transaction description="Saving for my child school" type="Saving" value={500} date="2025-12-12" />
+                    <Transaction id="5" description="Salary" type="Income" value={2000} date="2025-12-12" />
+                    <Transaction id="6" description="Going out to eat" expenseType="bills" type="Expense" value={2000} date="2025-12-12" />
+                    <Transaction id="7" description="Investing in some random shit" type="Investment" value={300} date="2025-12-12" />
+                    <Transaction id="8" description="Saving for my child school" type="Saving" value={500} date="2025-12-12" />
                 </div>
 
                 <div className="space-x-4">

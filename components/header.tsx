@@ -2,8 +2,8 @@ import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 import { createClient } from "@/lib/supabase/server";
 import LogoutButton from "./logoutButton";
-import Button from "./button";
-import {CircleUser} from "lucide-react"
+import CustomLink from "./customLink";
+import Avatar from "./avatar";
 
 export default async function Header() {
 
@@ -23,10 +23,10 @@ export default async function Header() {
                 <ThemeToggle/>
                 
                 <div >
-                    <Button variant="ghost" className="flex space-x-6">
-                        <CircleUser className="w-6 h-6 mr-1" />
+                    <CustomLink variant="ghost" href="/dashboard/config/profile" className="flex items-center space-x-6">
+                        <Avatar/>
                         {user && user.email}
-                    </Button>
+                    </CustomLink>
                 </div>
                 {!user && <Link href="/login" className="text-2xl font-bold">
                         Login

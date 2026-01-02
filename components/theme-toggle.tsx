@@ -12,7 +12,7 @@ export function ThemeToggle() {
     <Button
       variant="ghost" 
       onClick={() =>  setTheme(resolvedTheme === 'light' ? 'dark' : 'light')}
-      className="p-2 rounded-lg bg-white dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
+      className="p-2 rounded-lg transition-colors"
       aria-label="Alternar tema"
       suppressHydrationWarning
     >
