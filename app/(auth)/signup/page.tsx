@@ -1,5 +1,4 @@
 import SignupForm from "./components/signupForm";
-import LoginForm from "./components/signupForm";
 
 export default function Page() {
   return <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px] pt-10 pb-20">

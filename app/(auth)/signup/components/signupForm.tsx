@@ -5,30 +5,35 @@ import LabelItem from '@/components/labelForm'
 import { signup } from '@/lib/actions'
 import { useState } from 'react'
 
-export type LoginForm = {
-    email: string
-    password: string
-}
-
-export default function LoginForm() {
-
+export default function SignupForm() { 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('') // Novo estado
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setError('')
+
+        if (password !== confirmPassword) {
+            setError('The passwords do not coincide')
+            return
+        }
+
+        if (password.length < 6) {
+            setError('The password should have at least 6 characters.')
+            return
+        }
+
         setLoading(true)
 
         try {
             const result = await signup({ email, password })
 
-            if (result?.error)
-                console.log("error")
-            setError(result.error)
-
+            if (result?.error) {
+                setError(result.error)
+            }
         } finally {
             setLoading(false)
         }
@@ -41,13 +46,10 @@ export default function LoginForm() {
                     Signup
                 </h1>
 
-                <div className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Email */}
                     <div>
-                        <LabelItem
-                            htmlFor="email"
-                            className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
-                        >
+                        <LabelItem htmlFor="email" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                             Email
                         </LabelItem>
                         <input
@@ -56,20 +58,14 @@ export default function LoginForm() {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
-                       bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                       focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                       transition-all"
-                            placeholder="your@email.com"
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
+                            placeholder="seu@email.com"
                         />
                     </div>
 
                     {/* Password */}
                     <div>
-                        <LabelItem
-                            htmlFor="password"
-                            className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300"
-                        >
+                        <LabelItem htmlFor="password" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
                             Password
                         </LabelItem>
                         <input
@@ -78,14 +74,28 @@ export default function LoginForm() {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 
-                       bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                       focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                       transition-all"
+                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all"
                             placeholder="••••••••"
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSubmit(e)
-                            }}
+                        />
+                    </div>
+
+                    {/* Confirm Password */}
+                    <div>
+                        <LabelItem htmlFor="confirmPassword" className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">
+                            Confirm Password
+                        </LabelItem>
+                        <input
+                            id="confirmPassword"
+                            type="password"
+                            required
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className={`w-full px-4 py-3 rounded-lg border ${
+                                confirmPassword && password !== confirmPassword 
+                                ? 'border-red-500' 
+                                : 'border-gray-300 dark:border-gray-600'
+                            } bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 transition-all`}
+                            placeholder="••••••••"
                         />
                     </div>
 
@@ -95,40 +105,14 @@ export default function LoginForm() {
                         </div>
                     )}
 
-                    {/* Submit Button */}
                     <Button
-                        onClick={handleSubmit}
+                        type="submit"
                         disabled={loading}
-                        className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold 
-                     rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed
-                     focus:ring-4 focus:ring-blue-300"
+                        className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
                     >
-                        {loading ? (
-                            <span className="flex items-center justify-center gap-2">
-                                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                                    <circle
-                                        className="opacity-25"
-                                        cx="12"
-                                        cy="12"
-                                        r="10"
-                                        stroke="currentColor"
-                                        strokeWidth="4"
-                                        fill="none"
-                                    />
-                                    <path
-                                        className="opacity-75"
-                                        fill="currentColor"
-                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                    />
-                                </svg>
-                                Submit...
-                            </span>
-                        ) : (
-                            'Submit'
-                        )}
+                        {loading ? 'Processing...' : 'Create account'}
                     </Button>
-
-                </div>
+                </form>
             </div>
         </div>
     )
