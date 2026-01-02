@@ -1,19 +1,33 @@
 'use client'
 import { logout } from "@/lib/actions"
 import Button from "./button"
+import { LogOut, Loader } from 'lucide-react'
+import { useState } from "react"
 
-async function handleLogout() {
-        const result = await logout()
+export default function LogoutButton() {
 
-        if (result?.error){
-            console.log("Error when signing out")
-            throw new Error(result.error)
+    const [isSigningOut, setSigningOut] = useState(false)
+
+    async function handleLogout() {
+
+        try {
+            setSigningOut(true)
+            const result = await logout()
+
+            if (result?.error) {
+                console.log("Error when signing out")
+                throw new Error(result.error)
+            }
+            
+        }finally{
+            setSigningOut(false)
         }
-
+        
     }
-    
-export default function LogoutButton(){
-    return (                
-    <Button onClick={handleLogout}> Logout </Button>
-)
+    return (
+        <Button onClick={handleLogout}>
+            {!isSigningOut && <LogOut className="w-6 h-6" />}
+            {isSigningOut && <Loader className="animate-spin" />}
+        </Button>
+    )
 }

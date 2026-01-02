@@ -125,7 +125,6 @@ export async function login(formData: LoginForm) {
   const { error } = await supabase.auth.signInWithPassword(authData);
 
   if (error) {
-    console.error("Erro na autenticação:", error.message);
     return { error: error.message };
   }
 
@@ -156,4 +155,19 @@ export async function getCurrentUser() {
   }
 
   return user;
+}
+
+export async function signup(formData: LoginForm) {
+  const supabase = await createClient()
+
+  const data = {
+    email: formData.email as string,
+    password: formData.password as string,
+  }
+  const { error } = await supabase.auth.signUp(data)
+  if (error) {
+    return { error: error.message };
+  }
+  revalidatePath('/', 'layout')
+  redirect('/login')
 }

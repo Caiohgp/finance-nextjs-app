@@ -10,8 +10,6 @@ export default async function Header() {
     const supabase = await createClient();
     
     const {data: {user}, error} = await supabase.auth.getUser()
-    
-    console.log("Header:", user)
 
     return (
         <header className="align-center my-4 flex justify-between">
@@ -26,7 +24,7 @@ export default async function Header() {
                 
                 <div >
                     <Button variant="ghost" className="flex space-x-6">
-                        <CircleUser className="w-6 h-6" />
+                        <CircleUser className="w-6 h-6 mr-1" />
                         {user && user.email}
                     </Button>
                 </div>

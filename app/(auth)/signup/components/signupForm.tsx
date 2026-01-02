@@ -2,8 +2,7 @@
 
 import Button from '@/components/button'
 import LabelItem from '@/components/labelForm'
-import { login } from '@/lib/actions'
-import Link from 'next/link'
+import { signup } from '@/lib/actions'
 import { useState } from 'react'
 
 export type LoginForm = {
@@ -24,7 +23,7 @@ export default function LoginForm() {
         setLoading(true)
 
         try {
-            const result = await login({ email, password })
+            const result = await signup({ email, password })
 
             if (result?.error)
                 console.log("error")
@@ -39,7 +38,7 @@ export default function LoginForm() {
         <div>
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 w-full max-w-md">
                 <h1 className="text-3xl font-bold text-center mb-8 text-gray-900 dark:text-white">
-                    Login
+                    Signup
                 </h1>
 
                 <div className="space-y-6">
@@ -128,13 +127,6 @@ export default function LoginForm() {
                             'Submit'
                         )}
                     </Button>
-
-                    <p className="text-gray-600 dark:text-gray-400">
-                        Did not signed up yet?{' '}
-                        <Link href="/signup" className="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
-                            Sign up
-                        </Link>
-                    </p>
 
                 </div>
             </div>
