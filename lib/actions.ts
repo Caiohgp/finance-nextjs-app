@@ -178,9 +178,11 @@ export async function signup(formData: LoginForm) {
   redirect('/login')
 }
 
-export async function uploadAvatar(prevState: unknown, formData: { get: (arg0: string) => any }) {
+export async function uploadAvatar(prevState: unknown, formData: FormData) {
+  
+
   const supabase = await createClient()
-  const file = formData.get('file')
+  const file = formData.get('file') as File
   const fileExt = file.name.split('.').pop()
 
   const user = await getCurrentUser()
@@ -190,8 +192,6 @@ export async function uploadAvatar(prevState: unknown, formData: { get: (arg0: s
   }
 
   const fileName = `${user.id}.${fileExt}`
-
-  console.log(fileName)
 
   const { data: fileExists } = await supabase
     .storage
@@ -221,13 +221,13 @@ export async function uploadAvatar(prevState: unknown, formData: { get: (arg0: s
   }
 }
 
-export async function setUserName(prevState: unknown, formData: { get: (arg0: string) => any }) {
+export async function setUserName(prevState: unknown, formData: FormData) {
 
   const supabase = await createClient()
 
   const user = await getCurrentUser()
 
-  const name = formData.get('name')
+  const name = formData.get('name') as string;
 
   if (!user) {
     throw new Error('User not found')
@@ -257,7 +257,7 @@ export async function deleteAvatar(fileName: string) {
 
   const supabase = await createClient()
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .storage
     .from('Avatar Images')
     .remove([`${fileName}`])

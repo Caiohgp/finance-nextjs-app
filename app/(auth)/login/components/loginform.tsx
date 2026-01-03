@@ -27,7 +27,6 @@ export default function LoginForm() {
             const result = await login({ email, password })
 
             if (result?.error)
-                console.log("error")
             setError(result.error)
 
         } finally {

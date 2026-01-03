@@ -21,7 +21,6 @@ export default function TransactionDeleteButton({id,onDelete}:{id : string,onDel
         }
 
         try{
-            console.log(id)
             setLoading(confirm)
             await deleteTransaction(id)
 
@@ -29,7 +28,7 @@ export default function TransactionDeleteButton({id,onDelete}:{id : string,onDel
                 onDelete()
             }
         }catch (error) {
-            throw new Error('Erro ao deletar')
+            throw new Error('Error when deleting file')
         }finally{
             setLoading(false)
         }      
