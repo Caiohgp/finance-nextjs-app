@@ -9,6 +9,7 @@ import SelectItem from "@/components/selectForm";
 import TransactionListSkeleton from "../../components/skeletonLoading";
 import { Metadata } from "next";
 import TransactionForm from "../dashboard/components/transactionForm";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
     title: "Playground",
@@ -18,6 +19,8 @@ export const metadata: Metadata = {
 export default function Playground() {
     return (
         <div className="flex flex-col">
+            <Header />
+            <hr/>
             <h1>Dashboard</h1>
             <hr />
             <div>

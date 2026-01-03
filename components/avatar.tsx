@@ -12,8 +12,8 @@ export default async function Avatar({ width = 32, height = 32 }) {
         .createSignedUrl(user?.user_metadata?.avatar, 60 * 5)
 
     if (error) {
-        return <CircleUser className="w-6 h-6" />
+        return <CircleUser className="w-6 h-6 mr-2" />
     }
 
-    return <Image src={imageData.signedUrl} width={width} height={height} alt="User avatar" className="rounded-full" />
+    return <Image src={imageData.signedUrl} width={width} height={height} alt="User avatar" className="rounded-full mr-2" />
 }

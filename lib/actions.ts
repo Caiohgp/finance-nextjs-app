@@ -164,6 +164,11 @@ export async function signup(formData: LoginForm) {
   const data = {
     email: formData.email as string,
     password: formData.password as string,
+    options: {
+    data: {
+      user_type: 'standard',
+    },
+  },
   }
   const { error } = await supabase.auth.signUp(data)
   if (error) {
@@ -173,7 +178,7 @@ export async function signup(formData: LoginForm) {
   redirect('/login')
 }
 
-export async function uploadAvatar(formData: { get: (arg0: string) => any }) {
+export async function uploadAvatar(prevState: unknown, formData: { get: (arg0: string) => any }) {
   const supabase = await createClient()
   const file = formData.get('file')
   const fileExt = file.name.split('.').pop()
@@ -185,6 +190,8 @@ export async function uploadAvatar(formData: { get: (arg0: string) => any }) {
   }
 
   const fileName = `${user.id}.${fileExt}`
+
+  console.log(fileName)
 
   const { data: fileExists } = await supabase
     .storage
@@ -200,11 +207,50 @@ export async function uploadAvatar(formData: { get: (arg0: string) => any }) {
     .upload(fileName, file)
 
   if (error) {
-    throw new Error('Error uploading avatar')
+    return {
+      error: true,
+      message: 'Error when uploading the avatar'
+    }
   }
 
-  updateUserMetadata(fileName)
+  updateUserAvatar(fileName)
 
+  return {
+    error: false,
+    message: 'Avatar successfully uploaded'
+  }
+}
+
+export async function setUserName(prevState: unknown, formData: { get: (arg0: string) => any }) {
+
+  const supabase = await createClient()
+
+  const user = await getCurrentUser()
+
+  const name = formData.get('name')
+
+  if (!user) {
+    throw new Error('User not found')
+  }
+
+  const { error: dataUpdateError } = await supabase.auth
+    .updateUser({
+      data: {
+        name : name,
+      }
+    })
+
+  if (dataUpdateError) {
+    return {
+      error: true,
+      message: 'Error updating your user'
+    }
+  }
+
+  return {
+    error: false,
+    message: 'Information updated'
+  }
 }
 
 export async function deleteAvatar(fileName: string) {
@@ -217,15 +263,18 @@ export async function deleteAvatar(fileName: string) {
     .remove([`${fileName}`])
 
   if (error) {
-    console.error('Error deleing the previous avatars:', error)
+    return {
+      error: true,
+      message: 'Error deleting the previous avatar'
+    }
   }
 }
 
-export async function updateUserMetadata(fileName: string){
-  
-    const supabase = await createClient()
+export async function updateUserAvatar(fileName?: string) {
 
-    const { error: dataUpdateError } = await supabase.auth
+  const supabase = await createClient()
+
+  const { error: dataUpdateError } = await supabase.auth
     .updateUser({
       data: {
         avatar: fileName
@@ -233,6 +282,10 @@ export async function updateUserMetadata(fileName: string){
     })
 
   if (dataUpdateError) {
-    throw new Error('Error associating the avatar with the user')
+    return {
+      error: true,
+      message: 'Error associating the avatar with the user'
+    }
   }
+
 }

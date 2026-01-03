@@ -8,6 +8,9 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  const loginUrl = request.nextUrl.clone()
+  loginUrl.pathname = '/login'
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
@@ -36,9 +39,20 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   if (!user && !request.nextUrl.pathname.startsWith('/login')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    
+    return NextResponse.redirect(loginUrl)
+  }
+
+  if (request.nextUrl.pathname.startsWith('/playground')) {
+    if (!user) {
+      return NextResponse.redirect(loginUrl)
+    }
+
+    const userType = user.user_metadata?.user_type
+
+    if (userType !== 'admin') {
+      return NextResponse.redirect(new URL('/dashboard?error=unauthorized', request.url))
+    }
   }
 
   return response

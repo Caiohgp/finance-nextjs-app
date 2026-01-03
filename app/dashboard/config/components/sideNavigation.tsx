@@ -8,10 +8,6 @@ export default function SideNavigation() {
                 <Settings className="mr-2" />
                 Preferences
             </Link>
-            <Link className="flex hover:text-blue-500" href="./avatar">
-                <User className="mr-2" />
-                Avatar
-            </Link>
             <Link className="flex hover:text-blue-500" href="./profile">
                 <User className="mr-2" />
                 Profile

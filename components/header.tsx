@@ -25,7 +25,7 @@ export default async function Header() {
                 <div >
                     <CustomLink variant="ghost" href="/dashboard/config/profile" className="flex items-center space-x-6">
                         <Avatar/>
-                        {user && user.email}
+                        {user && user.user_metadata?.name}
                     </CustomLink>
                 </div>
                 {!user && <Link href="/login" className="text-2xl font-bold">
