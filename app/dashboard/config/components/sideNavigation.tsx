@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Settings, User } from 'lucide-react'
+import { Settings, User, Camera } from 'lucide-react'
 
 export default function SideNavigation() {
     return (
@@ -8,6 +8,11 @@ export default function SideNavigation() {
                 <Settings className="mr-2" />
                 Preferences
             </Link>
+            <Link className="flex hover:text-blue-500" href="./avatar">
+                <Camera className="mr-2" />
+                Avatar
+            </Link>
+            
             <Link className="flex hover:text-blue-500" href="./profile">
                 <User className="mr-2" />
                 Profile

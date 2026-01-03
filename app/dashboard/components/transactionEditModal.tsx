@@ -74,7 +74,7 @@ export default function TransactionEditModal({
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+      <div className="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg p-6 max-w-md w-full mx-4">
         <h2 className="text-2xl font-bold mb-4">Edit Transaction</h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -142,14 +142,14 @@ export default function TransactionEditModal({
             <Button
               variant="ghost"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+              className="flex-1 px-4 py-2 border rounded"
             >
               Cancel
             </Button>
             <Button
               variant="ghost"
               disabled={loading}
-              className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 px-4 py-2 rounded disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save'}
             </Button>
